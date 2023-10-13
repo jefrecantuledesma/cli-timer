@@ -1,0 +1,23 @@
+use std::io;
+use std::time;
+
+fn main() {
+    let hour_input = get_hour();
+    let mut hour_input = String::new();
+    println!("Please input hours (00): ");
+    let _ = io::stdin().read_line(&mut hour_input).unwrap();
+    println!("");
+    let mut minute_input = String::new();
+    let _ = io::stdin().read_line(&mut minute_input).unwrap();
+    println!("{}", minute_input);
+    let mut second_input = String::new();
+    let _ = io::stdin().read_line(&mut second_input).unwrap();
+    println!("{}", second_input);
+}
+
+fn get_hour() -> String {
+    let mut hour_input = String::new();
+    println!("Please ipnut hours (00): ");
+    let _ = io::stdin().read_line(&mut hour_input).unwrap();
+    return hour_input;
+}
