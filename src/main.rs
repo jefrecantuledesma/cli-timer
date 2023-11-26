@@ -29,13 +29,25 @@ struct Time {
     notification: bool,
 }
 
+#[derive(Clone)]
+struct Timer {
+    hour: i16,
+    minute: i16,
+    second: i16,
+    beep: bool,
+    notification: bool,
+}
+
 fn format_time(hour: i16, minute: i16, second: i16) -> String {
     format!("{:02}:{:02}:{:02}", hour, minute, second)
 }
 
-fn timer(mut hour: i16, mut minute: i16, mut second: i16) -> bool {
-    let mut total_time = hour * 3600 + minute * 60 + second;
+fn timer_fn(timer: &Timer) -> bool {
+    let mut total_time = timer.hour * 3600 + timer.minute * 60 + timer.second;
     let one_second = time::Duration::from_secs(1);
+    let mut hour = timer.hour;
+    let mut minute = timer.minute;
+    let mut second = timer.second;
     while total_time > 0 {
         total_time -= 1;
         print!("\r{}", format_time(hour, minute, second));
@@ -69,18 +81,27 @@ fn beep() {
     sink.sleep_until_end();
 }
 
+fn beep_sleep() {
+    for _ in 1..3 {
+        beep();
+        thread::sleep(Duration::from_secs_f32(0.25));
+    }
+}
+
 fn main() {
     let time: Time = Time::parse();
 
-    let hour = time.hour;
-    let minute = time.minute;
-    let second = time.second;
-    let beep_var = time.beep;
-    let notification = time.notification;
+    let timer = Timer {
+        hour: time.hour,
+        minute: time.minute,
+        second: time.second,
+        beep: time.beep,
+        notification: time.notification,
+    };
 
-    timer(hour, minute, second);
+    timer_fn(&timer);
 
-    if notification == true {
+    if timer.notification == true {
         Notification::new()
             .summary("Time is up!")
             //.body("")
@@ -92,18 +113,9 @@ fn main() {
             .unwrap();
     }
 
-    if beep_var == true {
-        beep();
-        thread::sleep(Duration::from_secs_f32(0.25));
-        beep();
-        thread::sleep(Duration::from_secs_f32(0.25));
-        beep();
+    if timer.beep == true {
+        beep_sleep();
         thread::sleep(Duration::from_secs_f32(0.75));
-        beep();
-        thread::sleep(Duration::from_secs_f32(0.25));
-        beep();
-        thread::sleep(Duration::from_secs_f32(0.25));
-        beep();
-        thread::sleep(Duration::from_secs_f32(0.25));
+        beep_sleep();
     }
 }

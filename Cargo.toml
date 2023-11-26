@@ -8,8 +8,11 @@ edition = "2021"
 [dependencies]
 notify-rust = "4"
 clap = {version = "4.4.6", features = ["derive"]} 
-rust-ini = "0.19"
-atomic-write-file = "0.1.0"
 beep = "0.3.0"
 dimensioned = "0.8.0"
 rodio = "0.17.1"
+
+[[bin]]
+edition = "2021"
+name = "cli-timer"
+path = "src/main.rs"
