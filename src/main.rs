@@ -29,6 +29,13 @@ struct Time {
     notification: bool,
 }
 
+fn validate_input(value: String) -> Result<(), String> {
+    match value.parse::<i16>() {
+        Ok(time_in) if time_in >= 0 && time_in <= 59 => Ok(()),
+        _ => Err("Minutes and seconds must be between 0 and 59.".to_string()),
+    }
+}
+
 #[derive(Clone)]
 struct Timer {
     hour: i16,
@@ -98,6 +105,9 @@ fn main() {
         beep: time.beep,
         notification: time.notification,
     };
+
+    validate_input(time.second.to_string()).expect("Invalid seconds");
+    validate_input(time.minute.to_string()).expect("Invalid minutes");
 
     timer_fn(&timer);
 
