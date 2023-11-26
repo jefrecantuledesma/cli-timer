@@ -8,8 +8,6 @@ edition = "2021"
 [dependencies]
 notify-rust = "4"
 clap = {version = "4.4.6", features = ["derive"]} 
-beep = "0.3.0"
-dimensioned = "0.8.0"
 rodio = "0.17.1"
 
 [[bin]]
